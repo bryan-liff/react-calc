@@ -60,3 +60,26 @@ p, ul {
 ul {
   padding-left: 30px;
 }
+
+/* http://css3buttongenerator.com/ */
+.btn {
+  -webkit-border-radius: 10;
+  -moz-border-radius: 10;
+  border-radius: 10px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  background: #95b3c7;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn:hover {
+  background: #3cb0fd;
+  text-decoration: none;
+}
+
+.screen{
+	text-align: right;
+}
