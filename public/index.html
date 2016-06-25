@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8">
     <title>React Calc</title>
-    <!-- Not present in the tutorial. Just for basic styling. -->
     <link rel="stylesheet" href="css/base.css" />
     <script src="libs/react.js"></script>
     <script src="libs/react-dom.js"></script>
@@ -13,13 +12,18 @@
   </head>
   <body>
     <div id="content"></div>
-<!--
-    <script type="text/babel" src="scripts/example.js"></script>
--->
     <script type="text/babel">
+    	var memory = [];
+
 		var InputKey = React.createClass({
 		  render: function() {
-		    return (<div className="inputKey btn">{this.props.val}</div>);
+		    return (
+		    	<div
+		    		onClick={this.props.handler}
+		    		className="inputKey btn">
+		    		{this.props.val}
+		    	</div>
+		   	);
 		  }
 		});
 		
@@ -35,45 +39,59 @@
 					<input
 					  type="text"
 		              placeholder="0.0"
+		              onClick={this.props.handler}
 		              className="screen"
+		              value={this.props.data.join('')}
 					/>
 				);
 			}
 		});
 		
 		var Calc = React.createClass({
+			getInitialState: function(){
+				return{ memory: memory };
+			},
+			handleInputPressed: function(e){
+				memory.push(e.target.innerText);
+				this.setState({memory: memory});
+			},
+			handleEqualsPressed: function(e){
+				//Evaluate memory string
+				//Set as new memory value
+				//Update state
+			},
 			render: function(){
 				return(
 					<table>
 						<tbody>
 							<tr>
 								<td colSpan="4">
-									<Screen />
+									<Screen data={this.state.memory} />
 								</td>
 							</tr>
 							<tr>
-								<td><InputKey val='7' /></td>
-								<td><InputKey val='8' /></td>
-								<td><InputKey val='9' /></td>
-								<td><InputKey val='/' /></td>
+								<td><InputKey val='7' handler={this.handleInputPressed} /></td>
+								<td><InputKey val='8' handler={this.handleInputPressed} /></td>
+								<td><InputKey val='9' handler={this.handleInputPressed} /></td>
+								<td><InputKey val='/' handler={this.handleInputPressed} /></td>
 							</tr>
 							<tr>
-								<td><InputKey val='4' /></td>
-								<td><InputKey val='5' /></td>
-								<td><InputKey val='6' /></td>
-								<td><InputKey val='*' /></td>
+								<td><InputKey val='4' handler={this.handleInputPressed} /></td>
+								<td><InputKey val='5' handler={this.handleInputPressed} /></td>
+								<td><InputKey val='6' handler={this.handleInputPressed} /></td>
+								<td><InputKey val='*' handler={this.handleInputPressed} /></td>
 							</tr>
 							<tr>
-								<td><InputKey val='1' /></td>
-								<td><InputKey val='2' /></td>
-								<td><InputKey val='3' /></td>
-								<td><InputKey val='-' /></td>
+								<td><InputKey val='1' handler={this.handleInputPressed} /></td>
+								<td><InputKey val='2' handler={this.handleInputPressed} /></td>
+								<td><InputKey val='3' handler={this.handleInputPressed} /></td>
+								<td><InputKey val='-' handler={this.handleInputPressed} /></td>
 							</tr>
 							<tr>
-								<td><InputKey val='0' /></td>
-								<td><InputKey val='.' /></td>
-								<td><InputKey val='%' /></td>
-								<td><InputKey val='+' /></td>
+								<td><InputKey val='0' handler={this.handleInputPressed} /></td>
+								<td><InputKey val='.' handler={this.handleInputPressed} /></td>
+								<td><InputKey val='%' handler={this.handleInputPressed} /></td>
+								<td><InputKey val='+' handler={this.handleInputPressed} /></td>
 							</tr>
 							<tr>
 								<td colSpan="4">
