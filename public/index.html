@@ -29,7 +29,13 @@
 		
 		var EqualsKey = React.createClass({
 		  render: function() {
-		    return (<div className="equalsKey btn">=</div>);
+		    return (
+		    	<div
+		    		onClick={this.props.handler}
+		    		className="equalsKey btn">
+		    		=
+		    	</div>
+		    );
 		  }
 		});
 		
@@ -56,9 +62,9 @@
 				this.setState({memory: memory});
 			},
 			handleEqualsPressed: function(e){
-				//Evaluate memory string
-				//Set as new memory value
-				//Update state
+				var calculated = eval(memory.join(''))
+				memory = [calculated];
+				this.setState({memory: memory});
 			},
 			render: function(){
 				return(
@@ -95,7 +101,7 @@
 							</tr>
 							<tr>
 								<td colSpan="4">
-									<EqualsKey />
+									<EqualsKey handler={this.handleEqualsPressed} />
 								</td>
 							</tr>
 						</tbody>
