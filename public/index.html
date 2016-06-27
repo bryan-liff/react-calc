@@ -58,12 +58,16 @@
 				return{ memory: memory };
 			},
 			handleInputPressed: function(e){
-				memory.push(e.target.innerText);
-				this.setState({memory: memory});
+				var btnValue = e.target.innerText;
+
+				if(canAddInput(btnValue)){
+					memory.push(btnValue);
+					this.setState({memory: memory});
+				}
 			},
 			handleEqualsPressed: function(e){
-				var calculated = eval(memory.join(''))
-				memory = [calculated];
+				var calculated = eval(memory.join(''));
+				memory = calculated.toString().split('');
 				this.setState({memory: memory});
 			},
 			render: function(){
@@ -110,6 +114,65 @@
 			}
 		});
 		
+		function canAddInput(input){
+			var reDigit = /\d$/;
+			var reNonDigit = /\D$/;
+			var reOperator = /\+|-|\*|\/|%/;
+
+			var lastAtomArr = [];
+
+			//if memory empty: allow digit
+			if(memory.length == 0){
+				if(reDigit.exec(input)){
+					return true;
+				}else{
+					return false;
+				}
+			}
+
+			// disallow if both input and final entry are operators
+			if(reOperator.exec(input) && reOperator.exec(memory[memory.length - 1])) return false;
+
+			//get last atom until operator
+			for (var i = memory.length; i > 0; i--) {
+			    var lastEntry = memory[i - 1];
+			    if(reOperator.exec(lastEntry)) break;
+			    lastAtomArr.push(lastEntry);
+			}
+			lastAtomArr.reverse();
+
+			if(lastAtomArr.length == 0){
+				if(reDigit.exec(input)){
+					return true;
+				}else{
+					return false;
+				}
+			}
+
+			if(lastAtomArr.length == 1){
+				//if zero
+				if(lastAtomArr[0] == '0'){
+				    if(input == '.') return true;
+				    if(reOperator.exec(input)) return true;
+				}else if(reDigit.exec(lastAtomArr[0])){ //if numeric
+					return true;
+				}
+				return false;
+			}
+
+			if(lastAtomArr.join('').indexOf('.') > -1){ //if atom CONTAINS decimal
+				if(lastAtomArr[lastAtomArr.length - 1] == '.'){ //if last position IS decimal
+					if(reDigit.exec(input)) return true;
+				}else{ //last position is NOT decimal
+					if(reDigit.exec(input)) return true;
+					if(reOperator.exec(input)) return true;
+				}
+			}else{
+				return true;
+			}
+			return false;
+		}
+
 		ReactDOM.render(
 		  <Calc />,
 		  document.getElementById('content')
