@@ -42,7 +42,7 @@
 		var Screen = React.createClass({
 			render: function(){
 				return (
-					<input
+				    <input
 					  type="text"
 		              placeholder="0.0"
 		              onClick={this.props.handler}
@@ -53,6 +53,17 @@
 			}
 		});
 		
+		var ResetButton = React.createClass({
+			render: function(){
+				return(
+					<span
+					  onClick={this.props.handler}
+					  className="boxclose">
+					</span>
+				);
+			}
+		});
+
 		var Calc = React.createClass({
 			getInitialState: function(){
 				return{ memory: memory };
@@ -70,12 +81,17 @@
 				memory = calculated.toString().split('');
 				this.setState({memory: memory});
 			},
+			handleResetPressed: function(e){
+				memory = [];
+				this.setState({memory: memory});
+			},
 			render: function(){
 				return(
 					<table>
 						<tbody>
 							<tr>
 								<td colSpan="4">
+									<ResetButton handler={this.handleResetPressed} />
 									<Screen data={this.state.memory} />
 								</td>
 							</tr>
